@@ -5,7 +5,6 @@ def get_data():
 	return [
 		{
 			"label": _("Projects"),
-			"icon": "fa fa-star",
 			"items": [
 				{
 					"type": "doctype",
@@ -44,7 +43,8 @@ def get_data():
 					"description": _("Project Update."),
 					"dependencies": ["Project"],
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/projects_icon.png"
 		},
 		{
 			"label": _("Time Tracking"),
@@ -67,11 +67,11 @@ def get_data():
 					"description": _("Cost of various activities"),
 					"dependencies": ["Activity Type"],
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/time_tracking.png"
 		},
 		{
 			"label": _("Reports"),
-			"icon": "fa fa-list",
 			"items": [
 				{
 					"type": "report",
@@ -95,7 +95,8 @@ def get_data():
 					"doctype": "Project",
 					"dependencies": ["Project"],
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/reports_icon.png"
 		},
 		
 	]

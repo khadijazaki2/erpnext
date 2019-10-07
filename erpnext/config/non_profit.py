@@ -5,7 +5,6 @@ def get_data():
 	return [
 		{
 			"label": _("Chapter"),
-			"icon": "fa fa-star",
 			"items": [
 				{
 					"type": "doctype",
@@ -70,7 +69,6 @@ def get_data():
 		},
 		{
 			"label": _("Loan Management"),
-			"icon": "icon-list",
 			"items": [
 				{
 					"type": "doctype",

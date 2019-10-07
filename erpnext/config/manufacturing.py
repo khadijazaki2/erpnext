@@ -50,7 +50,6 @@ def get_data():
 		},
 		{
 			"label": _("Production"),
-			"icon": "fa fa-star",
 			"items": [
 				{
 					"type": "doctype",
@@ -87,7 +86,6 @@ def get_data():
 		},
 		{
 			"label": _("Tools"),
-			"icon": "fa fa-wrench",
 			"items": [
 				{
 					"type": "doctype",
@@ -115,7 +113,6 @@ def get_data():
 		},
 		{
 			"label": _("Reports"),
-			"icon": "fa fa-list",
 			"items": [
 				{
 					"type": "report",
@@ -163,7 +160,6 @@ def get_data():
 		},
 		{
 			"label": _("Help"),
-			"icon": "fa fa-facetime-video",
 			"items": [
 				{
 					"type": "help",

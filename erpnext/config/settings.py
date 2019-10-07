@@ -6,7 +6,6 @@ def get_data():
 	data = [
 		{
 			"label": _("Settings"),
-			"icon": "fa fa-wrench",
 			"items": [
 				{
 					"type": "doctype",
@@ -20,7 +19,6 @@ def get_data():
 		},
 		{
 			"label": _("Printing"),
-			"icon": "fa fa-print",
 			"items": [
 				{
 					"type": "doctype",
@@ -77,7 +75,6 @@ def get_data():
 		},
 		{
 			"label": _("Customize"),
-			"icon": "fa fa-glass",
 			"items": [
 				{
 					"type": "doctype",
@@ -88,7 +85,6 @@ def get_data():
 		},
 		{
 			"label": _("Email"),
-			"icon": "fa fa-envelope",
 			"items": [
 				{
 					"type": "doctype",

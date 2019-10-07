@@ -6,7 +6,6 @@ def get_data():
 	return [
 		{
 			"label": _("Consultation"),
-			"icon": "icon-star",
 			"items": [
 				{
 					"type": "doctype",
@@ -48,7 +47,6 @@ def get_data():
 		},
 		{
 			"label": _("Laboratory"),
-			"icon": "icon-list",
 			"items": [
 				{
 					"type": "doctype",
@@ -70,7 +68,6 @@ def get_data():
 		},
 		{
 			"label": _("Masters"),
-			"icon": "icon-list",
 			"items": [
 				{
 					"type": "doctype",
@@ -109,7 +106,6 @@ def get_data():
 		},
 		{
 			"label": _("Settings"),
-			"icon": "icon-cog",
 			"items": [
 				{
 					"type": "doctype",

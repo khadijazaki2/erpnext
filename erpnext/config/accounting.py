@@ -66,7 +66,7 @@ def get_data():
 					"is_query_report": True,
 					"doctype": "Sales Invoice"
 				},
-			]
+			],
 		},
 		{
 			"label": _("Accounts Payable"),
@@ -75,7 +75,7 @@ def get_data():
 					"type": "doctype",
 					"name": "Purchase Invoice",
 					"description": _("Bills raised by Suppliers."),
-					"onboard": 1
+					"onboard": 1,
 				},
 				{
 					"type": "doctype",
@@ -124,7 +124,7 @@ def get_data():
 					"is_query_report": True,
 					"doctype": "Purchase Invoice"
 				},
-			]
+			],
 		},
 		{
 			"label": _("Accounting Masters"),
@@ -170,7 +170,7 @@ def get_data():
 					"name": "Payment Term",
 					"description": _("Payment Terms based on conditions")
 				},
-			]
+			],
 		},
 		{
 			"label": _("Banking and Payments"),
@@ -213,7 +213,7 @@ def get_data():
 					"name": "Cheque Print Template",
 					"description": _("Setup cheque dimensions for printing")
 				},
-			]
+			],
 		},
 		{
 			"label": _("General Ledger"),
@@ -387,7 +387,6 @@ def get_data():
 		},
 		{
 			"label": _("Settings"),
-			"icon": "fa fa-cog",
 			"items": [
 				{
 					"type": "doctype",
@@ -483,7 +482,6 @@ def get_data():
 		},
 		{
 			"label": _("Reports"),
-			"icon": "fa fa-table",
 			"items": [
 				{
 					"type": "report",
@@ -525,7 +523,6 @@ def get_data():
 		},
 		{
 			"label": _("Share Management"),
-			"icon": "fa fa-microchip ",
 			"items": [
 				{
 					"type": "doctype",
