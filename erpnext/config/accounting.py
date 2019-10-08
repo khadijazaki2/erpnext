@@ -6,6 +6,19 @@ import frappe
 def get_data():
 	config = [
 		{
+			"label": _("Dashboard"),
+			"items": [
+				{
+					"type": "doctype",
+					"name": "Sales Invoice",
+					"description": _("Bills raised to Customers."),
+					"onboard": 1,
+				},
+			],
+			"link": "#List/Dashboard/List",
+			"icon": "/assets/frappe/images/icons/dashboard_grey.png"
+		},
+		{
 			"label": _("Accounts Receivable"),
 			"items": [
 				{
@@ -67,6 +80,7 @@ def get_data():
 					"doctype": "Sales Invoice"
 				},
 			],
+			"icon": "/assets/frappe/images/icons/accounts_receivable.png"
 		},
 		{
 			"label": _("Accounts Payable"),
@@ -125,6 +139,7 @@ def get_data():
 					"doctype": "Purchase Invoice"
 				},
 			],
+			"icon": "/assets/frappe/images/icons/accounts_payable.png"
 		},
 		{
 			"label": _("Accounting Masters"),
@@ -171,6 +186,7 @@ def get_data():
 					"description": _("Payment Terms based on conditions")
 				},
 			],
+			"icon": "/assets/frappe/images/icons/account_masters.png"
 		},
 		{
 			"label": _("Banking and Payments"),
@@ -214,6 +230,7 @@ def get_data():
 					"description": _("Setup cheque dimensions for printing")
 				},
 			],
+			"icon": "/assets/frappe/images/icons/banking_icon.png"
 		},
 		{
 			"label": _("General Ledger"),
@@ -241,7 +258,8 @@ def get_data():
 					"doctype": "Sales Invoice",
 					"is_query_report": True,
 				}
-			]
+			],
+			"icon": "/assets/frappe/images/icons/general_ledger_icon.png"
 		},
 		{
 			"label": _("Taxes"),
@@ -276,7 +294,8 @@ def get_data():
 					"name": "Tax Withholding Category",
 					"description": _("Tax Withholding rates to be applied on transactions.")
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/taxes_icon.png"
 		},
 		{
 			"label": _("Cost Center and Budgeting"),
@@ -309,7 +328,8 @@ def get_data():
 					"name": "Monthly Distribution",
 					"description": _("Seasonality for setting budgets, targets etc.")
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/cost_center_budgeting.png"
 		},
 		{
 			"label": _("Financial Statements"),
@@ -344,7 +364,8 @@ def get_data():
 					"doctype": "GL Entry",
 					"is_query_report": True
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/financial_icon.png"
 		},
 		{
 			"label": _("Opening and Closing"),
@@ -362,7 +383,8 @@ def get_data():
 					"name": "Period Closing Voucher",
 					"description": _("Close Balance Sheet and book Profit or Loss.")
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/opening-and-closing.png"
 
 		},
 		{
@@ -383,7 +405,8 @@ def get_data():
 					"name": "Exchange Rate Revaluation",
 					"description": _("Exchange Rate Revaluation master.")
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/multi_currency_icon.png"
 		},
 		{
 			"label": _("Settings"),
@@ -404,7 +427,8 @@ def get_data():
 					"name": "Mode of Payment",
 					"description": _("e.g. Bank, Cash, Credit Card")
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/settings_icon.png"
 		},
 		{
 			"label": _("Subscription Management"),
@@ -425,7 +449,7 @@ def get_data():
 					"type": "doctype",
 					"name": "Subscription Settings"
 				}
-			]
+			],
 		},
 		{
 			"label": _("Bank Statement"),
@@ -449,7 +473,8 @@ def get_data():
 					"label": _("Bank Statement Settings"),
 					"name": "Bank Statement Settings",
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/bank_statement_icon.png"
 		},
 		{
 			"label": _("Profitability"),
@@ -478,7 +503,8 @@ def get_data():
 					"is_query_report": True,
 					"doctype": "Purchase Invoice"
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/profitability_icon.png"
 		},
 		{
 			"label": _("Reports"),
@@ -519,7 +545,8 @@ def get_data():
 					"name": "Address And Contacts",
 					"doctype": "Address"
 				}
-			]
+			],
+			"icon": "/assets/frappe/images/icons/reports_icon.png"
 		},
 		{
 			"label": _("Share Management"),
