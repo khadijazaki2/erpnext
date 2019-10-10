@@ -10,7 +10,7 @@ def get_data():
 			"items": [
 				{
 					"type": "doctype",
-					"name": "Sales Invoice",
+					"name": "Dashboard",
 					"description": _("Bills raised to Customers."),
 					"onboard": 1,
 				},
@@ -450,6 +450,7 @@ def get_data():
 					"name": "Subscription Settings"
 				}
 			],
+			"icon": "/assets/frappe/images/icons/subscription_management.png"
 		},
 		{
 			"label": _("Bank Statement"),
@@ -573,7 +574,8 @@ def get_data():
 					"doctype": "Share Transfer",
 					"is_query_report": True
 				}
-			]
+			],
+			"icon": "/assets/frappe/images/icons/share_icon.png"
 		},
 
 	]
