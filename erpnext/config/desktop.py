@@ -31,7 +31,7 @@ def get_data():
 			"category": "Modules",
 			"label": _("Selling"),
 			"color": "#1abc9c",
-			"icon": "/assets/frappe/images/main_icons/getting_started.png",
+			"icon": "/assets/frappe/images/main_icons/selling.png",
 			"type": "module",
 			"description": "Sales orders, quotations, customers and items."
 		},
@@ -40,7 +40,7 @@ def get_data():
 			"category": "Modules",
 			"label": _("Buying"),
 			"color": "#c0392b",
-			"icon": "/assets/frappe/images/main_icons/getting_started.png",
+			"icon": "/assets/frappe/images/main_icons/buying.png",
 			"type": "module",
 			"description": "Purchasing, suppliers, material requests, and items."
 		},
@@ -49,7 +49,7 @@ def get_data():
 			"category": "Modules",
 			"label": _("Stock"),
 			"color": "#f39c12",
-			"icon": "/assets/frappe/images/main_icons/getting_started.png",
+			"icon": "/assets/frappe/images/main_icons/stock.png",
 			"type": "module",
 			"description": "Stock transactions, reports, serial numbers and batches."
 		},
