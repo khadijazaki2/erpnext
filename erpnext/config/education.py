@@ -23,7 +23,8 @@ def get_data():
 					"type": "doctype",
 					"name": "Student Group"
 				}
-			]
+			],
+			"icon": "/assets/frappe/images/icons/student_icon.png"
 		},
 		{
 			"label": _("Admission"),
@@ -45,7 +46,8 @@ def get_data():
 					"type": "doctype",
 					"name": "Program Enrollment"
 				}
-			]
+			],
+			"icon": "/assets/frappe/images/icons/admission.png"
 		},
 		{
 			"label": _("Attendance"),
@@ -70,7 +72,8 @@ def get_data():
 					"name": "Student Batch-Wise Attendance",
 					"doctype": "Student Attendance"
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/attendance_icon.png"
 		},
 		{
 			"label": _("Tools"),
@@ -95,7 +98,8 @@ def get_data():
 					"type": "doctype",
 					"name": "Course Scheduling Tool"
 				}
-			]
+			],
+			"icon": "/assets/frappe/images/icons/tools_icon.png"
 		},
 		{
 			"label": _("Assessment"),
@@ -117,7 +121,8 @@ def get_data():
 					"type": "doctype",
 					"name": "Assessment Criteria"
 				}
-			]
+			],
+			"icon": "/assets/frappe/images/icons/assessment.png"
 		},
 		{
 			"label": _("Assessment Reports"),
@@ -144,7 +149,8 @@ def get_data():
 					"type": "doctype",
 					"name": "Student Report Generation Tool"
 				}
-			]
+			],
+			"icon": "/assets/frappe/images/icons/assessment_reports.png"
 		},
 		{
 			"label": _("Fees"),
@@ -165,7 +171,8 @@ def get_data():
 					"type": "doctype",
 					"name": "Fee Category"
 				}
-			]
+			],
+			"icon": "/assets/frappe/images/icons/Fees.png"
 		},
 		{
 			"label": _("Schedule"),
@@ -179,7 +186,8 @@ def get_data():
 					"type": "doctype",
 					"name": "Course Scheduling Tool"
 				}
-			]
+			],
+			"icon": "/assets/frappe/images/icons/schedule_icon.png"
 		},
 		{
 			"label": _("Masters"),
@@ -207,7 +215,8 @@ def get_data():
 					"name": "Room",
 					"onboard": 1,
 				}
-			]
+			],
+			"icon": "/assets/frappe/images/icons/masters_icon.png"
 		},
 		{
 			"label": _("Content Masters"),
@@ -224,7 +233,8 @@ def get_data():
 					"type": "doctype",
 					"name": "Quiz"
 				}
-			]
+			],
+			"icon": "/assets/frappe/images/icons/content_masters.png"
 		},
 		{
 			"label": _("LMS Activity"),
@@ -241,7 +251,8 @@ def get_data():
 					"type": "doctype",
 					"name": "Quiz Activity"
 				}
-			]
+			],
+			"icon": "/assets/frappe/images/icons/lms_activity.png"
 		},
 		{
 			"label": _("Settings"),
@@ -271,7 +282,8 @@ def get_data():
 					"type": "doctype",
 					"name": "Education Settings"
 				}
-			]
+			],
+			"icon": "/assets/frappe/images/icons/settings_icon.png"
 		},
 		{
 			"label": _("Other Reports"),
@@ -294,6 +306,7 @@ def get_data():
 					"doctype": "Fees",
 					"is_query_report": True
 				}
-			]
+			],
+			"icon": "/assets/frappe/images/icons/reports_icon.png"
 		}
 	]

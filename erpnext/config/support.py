@@ -69,7 +69,6 @@ def get_data():
 		},
 		{
 			"label": _("Reports"),
-			"icon": "fa fa-list",
 			"items": [
 				{
 					"type": "page",
@@ -93,7 +92,6 @@ def get_data():
 		},
 		{
 			"label": _("Settings"),
-			"icon": "fa fa-list",
 			"items": [
 				{
 					"type": "doctype",

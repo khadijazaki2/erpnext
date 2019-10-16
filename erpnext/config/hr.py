@@ -40,7 +40,8 @@ def get_data():
 					"type": "doctype",
 					"name": "Employee Health Insurance"
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/rmployee_icon.png"
 		},
 		{
 			"label": _("Attendance"),
@@ -81,7 +82,8 @@ def get_data():
 					"name": "Monthly Attendance Sheet",
 					"doctype": "Attendance"
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/attendance_icon.png"
 		},
 		{
 			"label": _("Leaves"),
@@ -140,7 +142,8 @@ def get_data():
 					"name": "Leave Ledger Entry",
 					"doctype": "Leave Ledger Entry"
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/leaves_icon.png"
 		},
 		{
 			"label": _("Payroll"),
@@ -194,7 +197,8 @@ def get_data():
 					"name": "Salary Register",
 					"doctype": "Salary Slip"
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/payroll.png"
 		},
 		{
 			"label": _("Employee Tax and Benefits"),
@@ -229,7 +233,8 @@ def get_data():
 					"name": "Employee Tax Exemption Sub Category",
 					"dependencies": ["Employee"]
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/employee_tax.png"
 		},
 		{
 			"label": _("Employee Lifecycle"),
@@ -269,7 +274,8 @@ def get_data():
 					"name": "Employee Separation Template",
 					"dependencies": ["Employee"]
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/employee_lifecycle.png"
 		},
 		{
 			"label": _("Recruitment"),
@@ -293,7 +299,8 @@ def get_data():
 					"type": "doctype",
 					"name": "Staffing Plan",
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/recruitment_icon.png"
 		},
 		{
 			"label": _("Training"),
@@ -314,7 +321,8 @@ def get_data():
 					"type": "doctype",
 					"name": "Training Feedback"
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/training_icon.png"
 		},
 		{
 			"label": _("Performance"),
@@ -341,7 +349,8 @@ def get_data():
 					"label": _("Energy Point Leaderboard"),
 					"route": "#social/users"
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/performance_icon.png"
 		},
 		{
 			"label": _("Expense Claims"),
@@ -356,7 +365,8 @@ def get_data():
 					"name": "Employee Advance",
 					"dependencies": ["Employee"]
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/expense_claims.png"
 		},
 		{
 			"label": _("Loans"),
@@ -374,7 +384,8 @@ def get_data():
 					"type": "doctype",
 					"name": "Loan Type",
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/loans_icon.png"
 		},
 		{
 			"label": _("Shift Management"),
@@ -391,7 +402,8 @@ def get_data():
 					"type": "doctype",
 					"name": "Shift Assignment",
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/shift_management.png"
 		},
 		{
 			"label": _("Fleet Management"),
@@ -410,11 +422,11 @@ def get_data():
 					"name": "Vehicle Expenses",
 					"doctype": "Vehicle"
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/fleet_management.png"
 		},
 		{
 			"label": _("Settings"),
-			"icon": "fa fa-cog",
 			"items": [
 				{
 					"type": "doctype",
@@ -429,11 +441,11 @@ def get_data():
 					"name": "team-updates",
 					"label": _("Team Updates")
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/settings_icon.png"
 		},
 		{
 			"label": _("Reports"),
-			"icon": "fa fa-list",
 			"items": [
 				{
 					"type": "report",
@@ -453,6 +465,7 @@ def get_data():
 					"name": "Department Analytics",
 					"doctype": "Employee"
 				},
-			]
+			],
+			"icon": "/assets/frappe/images/icons/reports_icon.png"
 		},
 	]

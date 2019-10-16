@@ -93,7 +93,6 @@ def get_data():
 		},
 		{
 			"label": _("Settings"),
-			"icon": "fa fa-cog",
 			"items": [
 				{
 					"type": "doctype",
@@ -216,7 +215,6 @@ def get_data():
 		},
 		{
 			"label": _("Tools"),
-			"icon": "fa fa-wrench",
 			"items": [
 				{
 					"type": "doctype",
@@ -245,7 +243,6 @@ def get_data():
 		},
 		{
 			"label": _("Key Reports"),
-			"icon": "fa fa-table",
 			"items": [
 				{
 					"type": "report",
@@ -301,7 +298,6 @@ def get_data():
 		},
 		{
 			"label": _("Other Reports"),
-			"icon": "fa fa-list",
 			"items": [
 				{
 					"type": "report",
