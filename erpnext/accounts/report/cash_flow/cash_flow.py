@@ -9,8 +9,9 @@ from erpnext.accounts.report.financial_statements import (get_period_list, get_c
 from erpnext.accounts.report.profit_and_loss_statement.profit_and_loss_statement import get_net_profit_loss
 from erpnext.accounts.utils import get_fiscal_year
 
-
-def execute(filters=None):
+@frappe.whitelist()
+def execute(filters=None, dashboard=False):
+	filters = frappe.parse_json(filters)
 	if cint(frappe.db.get_single_value('Accounts Settings', 'use_custom_cash_flow')):
 		from erpnext.accounts.report.cash_flow.custom_cash_flow import execute as execute_custom
 		return execute_custom(filters=filters)
@@ -70,6 +71,9 @@ def execute(filters=None):
 	columns = get_columns(filters.periodicity, period_list, filters.accumulated_values, filters.company)
 
 	chart = get_chart_data(columns, data)
+
+	if dashboard:
+		return chart
 
 	return columns, data, None, chart
 

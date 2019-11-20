@@ -44,7 +44,7 @@ def setup(domain):
 	frappe.db.commit()
 	frappe.clear_cache()
 
-def complete_setup(domain='Manufacturing'):
+def complete_setup(domain='Retail'):
 	print("Complete Setup...")
 	from frappe.desk.page.setup_wizard.setup_wizard import setup_complete
 

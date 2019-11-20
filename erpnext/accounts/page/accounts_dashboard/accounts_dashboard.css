@@ -1,0 +1,26 @@
+.chart-column-container{
+	margin: 5px 0;
+}
+
+.chart-container text.title {
+	text-transform: uppercase;
+	font-size: 11px;
+}
+
+.pl-chart .frappe-chart {
+	margin-top: -20px;
+}
+
+.pl-chart-container .chart-filter, .cf-chart-container .chart-filter, .bl-chart-container .chart-filter {
+	z-index: 1;
+}
+
+.chart-filter {
+	position: relative;
+	top: 5px;
+	margin-right: 10px;
+}
+
+.filter-label {
+	margin-right: 4px;
+}

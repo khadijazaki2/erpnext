@@ -3,6 +3,7 @@
 
 from __future__ import unicode_literals
 import frappe, json
+from frappe import _
 from frappe.utils import add_to_date, date_diff, getdate, nowdate, get_last_day, formatdate
 from erpnext.accounts.report.general_ledger.general_ledger import execute
 from frappe.core.page.dashboard.dashboard import cache_source, get_from_date_from_timespan
@@ -49,6 +50,7 @@ def get(chart_name = None, chart = None, no_cache = None, from_date = None, to_d
 
 def build_result(account, dates, gl_entries):
 	result = [[getdate(date), 0.0] for date in dates]
+
 	root_type = frappe.db.get_value('Account', account, 'root_type')
 
 	# start with the first date
@@ -100,7 +102,9 @@ def get_dates_from_timegrain(from_date, to_date, timegrain):
 		months = 3
 
 	dates = [get_period_ending(from_date, timegrain)]
+	
 	while getdate(dates[-1]) < getdate(to_date):
 		date = get_period_ending(add_to_date(dates[-1], years=years, months=months, days=days), timegrain)
 		dates.append(date)
+	
 	return dates

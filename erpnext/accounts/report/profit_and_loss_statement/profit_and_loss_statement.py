@@ -7,7 +7,10 @@ from frappe import _
 from frappe.utils import flt
 from erpnext.accounts.report.financial_statements import (get_period_list, get_columns, get_data)
 
-def execute(filters=None):
+@frappe.whitelist()
+def execute(filters=None, dashboard=False):
+	# frappe.throw(_("{0}").format(filters))
+	filters = frappe.parse_json(filters)
 	period_list = get_period_list(filters.from_fiscal_year, filters.to_fiscal_year,
 		filters.periodicity, filters.accumulated_values, filters.company)
 
@@ -31,6 +34,8 @@ def execute(filters=None):
 
 	chart = get_chart_data(filters, columns, income, expense, net_profit_loss)
 
+	if dashboard:
+		return chart
 	return columns, data, None, chart
 
 def get_net_profit_loss(income, expense, period_list, company, currency=None, consolidated=False):

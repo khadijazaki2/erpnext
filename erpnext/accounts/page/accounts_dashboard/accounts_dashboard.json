@@ -1,0 +1,25 @@
+{
+ "content": null,
+ "creation": "2019-11-17 22:53:02.983437",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2019-11-18 05:43:16.085756",
+ "modified_by": "Administrator",
+ "module": "Accounts",
+ "name": "accounts-dashboard",
+ "owner": "Administrator",
+ "page_name": "accounts-dashboard",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Accounts Manager"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0
+}

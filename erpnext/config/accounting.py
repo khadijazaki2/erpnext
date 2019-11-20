@@ -9,13 +9,12 @@ def get_data():
 			"label": _("Dashboard"),
 			"items": [
 				{
-					"type": "doctype",
-					"name": "Dashboard",
-					"description": _("Bills raised to Customers."),
-					"onboard": 1,
+					"type": "page",
+					"name": "accounts-dashboard",
+					"label": _("Accounts Dashboard")
 				},
 			],
-			"link": "#List/Dashboard/List",
+			"link": "#accounts-dashboard",
 			"icon": "/assets/frappe/images/icons/dashboard_grey.png"
 		},
 		{

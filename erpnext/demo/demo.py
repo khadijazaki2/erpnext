@@ -23,7 +23,7 @@ bench --site demo.erpnext.dev execute erpnext.demo.demo.simulate
 
 """
 
-def make(domain='Manufacturing', days=100):
+def make(domain='Retail', days=100):
 	frappe.flags.domain = domain
 	frappe.flags.mute_emails = True
 	setup_data.setup(domain)
@@ -43,7 +43,7 @@ def make(domain='Manufacturing', days=100):
 
 	simulate(domain, days)
 
-def simulate(domain='Manufacturing', days=100):
+def simulate(domain='Retail', days=100):
 	runs_for = frappe.flags.runs_for or days
 	frappe.flags.company = erpnext.get_default_company()
 	frappe.flags.mute_emails = True
