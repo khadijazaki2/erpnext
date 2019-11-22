@@ -1,7 +1,11 @@
-<div class="user-profile-sidebar">
+<div class="bank">
+    <h4>Bank Balances</h4>
         {% if abc %}
         {% for(const [key, value] of Object.entries(abc)) { %}
-        <li> {%= key %}{%= value %} </li>
+        <div class="bank-card">
+        <p style="font-size: 13px;"> {%= key %} </p>
+        <span style="font-size: 12px;">Bank Balance</span><span style="float:right;font-size: 12px;">{{currency}}{%= value %}</span>
+    </div>
     {% } %}
 
         {% endif %}

@@ -11,8 +11,14 @@
 	margin-top: -20px;
 }
 
-.pl-chart-container .chart-filter, .cf-chart-container .chart-filter, .bl-chart-container .chart-filter {
+.pl-chart-container .chart-filter, .cf-chart-container .chart-filter, .invoice-chart-container .chart-filter {
 	z-index: 1;
+}
+
+.pl-chart-container, .cf-chart-container{
+	background: #fff;
+	border-radius: 10px;
+	margin-top: 10px;
 }
 
 .chart-filter {
@@ -24,3 +30,29 @@
 .filter-label {
 	margin-right: 4px;
 }
+
+.bank{
+	background: #fff;
+	border-radius: 10px;
+	height: 350px;
+	overflow-y: scroll;
+	padding: 15px;
+}
+
+.bank-card{
+	background: #f4f5f7;
+	border-radius: 10px;
+    padding: 4px 15px 15px 15px;
+    margin-bottom: 10px;
+}
+
+.doughnuts{
+	background: #fff;
+	border-radius: 10px;
+	padding: 15px;
+}
+
+.inline-checkboxes { 
+    display: inline-block; 
+    margin:10px;
+    }

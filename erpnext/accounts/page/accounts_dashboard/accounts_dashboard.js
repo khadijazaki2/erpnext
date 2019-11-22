@@ -23,17 +23,23 @@ class AccountsDashboard {
 	show() {
 		this.main_section.empty().append(frappe.render_template('accounts_dashboard'));
 		this.bank_balances = this.main_section.find('.bank-balances');
+		this.sales_doughnut = this.main_section.find('.sales-doughnut');
+		this.purchase_doughnut = this.main_section.find('.purchase-doughnut');
+		this.invoice_filter = 'Last Year'
 		this.render_bank_balances();
+		this.get_sales_invoices();
+		this.get_purchase_invoices();
+		this.create_invoice_filters();
 		this.render_profit_loss();
 		this.render_cash_flow();
-		// this.render_balance_sheet();
 	}
 
 	render_bank_balances() {
 		frappe.xcall('erpnext.accounts.page.accounts_dashboard.accounts_dashboard.get_bank_balances', {
 		}).then((r) => {
 			this.bank_balances.empty().append(frappe.render_template('bank_balances', {
-				abc: r
+				abc: r.balances,
+				currency: r.currency
 			}));
 		});
 	}
@@ -53,8 +59,8 @@ class AccountsDashboard {
 		this.pl_filters = {
 			'company': frappe.defaults.get_user_default("company"),
 			'to_fiscal_year': this.fiscal,
-			'from_fiscal_year': this.fiscal - 4,
-			'periodicity': 'Yearly'
+			'from_fiscal_year': this.fiscal,
+			'periodicity': 'Quarterly'
 		};
 		this.pl_customs = {
 			type: 'line',
@@ -63,7 +69,7 @@ class AccountsDashboard {
 			regionFill: 1,
 			hideDots: 0,
 			hideLine: 0,
-			heatline: 1,
+			heatline: 0,
 			stacked: 0
 		}
 		this.make_pl_chart();
@@ -74,10 +80,9 @@ class AccountsDashboard {
 
 	make_pl_chart(){
 		this.pl_chart = new frappe.Chart('.pl-chart', {
-			title: 'Profit and Loss',
 			type: this.pl_customs.type, //customizable
 			height: 300,
-			colors: ['#00a849', '#ff6515', '#627fb2'],
+			colors: ['#0e6333', '#ff5858', '#4f1ebb'],
 			isNavigable: this.pl_customs.isNavigable, //customizable
 			valuesOverPoints: this.pl_customs.valuesOverPoints, //customizable
 			lineOptions: {
@@ -140,7 +145,7 @@ class AccountsDashboard {
 				}
 			},
 			{
-				label: 'Yearly',
+				label: 'Quarterly',
 				options: ['Yearly', 'Half-Yearly', 'Quarterly', 'Monthly'],
 				action: (selected_item) => {
 					this.pl_filters.periodicity = selected_item;
@@ -148,7 +153,7 @@ class AccountsDashboard {
 				}
 			},
 			{
-				label: this.fiscal - 4,
+				label: this.fiscal,
 				title: "From Fiscal Year",
 				options: this.fiscals,
 				action: (selected_item) => {
@@ -174,30 +179,40 @@ class AccountsDashboard {
 		this.cf_filters = {
 			'company': frappe.defaults.get_user_default("company"),
 			'to_fiscal_year': this.fiscal,
-			'from_fiscal_year': this.fiscal - 4,
+			'from_fiscal_year': this.fiscal,
 			'periodicity': 'Yearly'
 		};
-		this.make_cf_chart({});
+		this.cf_customs = {
+			type: 'bar',
+			isNavigable: 0, 
+			valuesOverPoints: 1,
+			regionFill: 1,
+			hideDots: 0,
+			hideLine: 0,
+			heatline: 0,
+			stacked: 0
+		}
+		this.make_cf_chart();
 		this.create_cf_chart_filters();
+		this.create_cf_chart_customs();
 	}
 
 
-	make_cf_chart({type = 'bar', isNavigable = 0, valuesOverPoints = 0, regionFill = 0, hideDots = 0, hideLine = 0, heatline = 0, stacked = 0}){
+	make_cf_chart(){
 		this.cf_chart = new frappe.Chart('.cf-chart', {
-			title: 'Cash Flow',
-			type: type, //customizable
+			type: this.cf_customs.type, //customizable
 			height: 300,
-			colors: ['#00a849', '#ff6515', '#627fb2'],
-			isNavigable: isNavigable, //customizable
-			valuesOverPoints: valuesOverPoints, //customizable
+			colors: ['#0e6333', '#ff5858', '#4f1ebb'],
+			isNavigable: this.cf_customs.isNavigable, //customizable
+			valuesOverPoints: this.cf_customs.valuesOverPoints, //customizable
 			lineOptions: {
-				regionFill: regionFill, //customizable
-				hideDots: hideDots, //customizable
-				hideLine: hideLine, //customizable
-				heatline: heatline //customizable
+				regionFill: this.cf_customs.regionFill, //customizable
+				hideDots: this.cf_customs.hideDots, //customizable
+				hideLine: this.cf_customs.hideLine, //customizable
+				heatline: this.cf_customs.heatline //customizable
 			},
 			barOptions: {
-				stacked: stacked, //customizable
+				stacked: this.cf_customs.stacked, //customizable
 			},
 			data: {
 				labels: [],
@@ -244,7 +259,8 @@ class AccountsDashboard {
 				label: 'bar',
 				options: ['bar', 'line'],
 				action: (selected_item) => {
-					this.make_cf_chart({type: selected_item});
+					this.cf_customs.type = selected_item
+					this.make_cf_chart();
 				}
 			},
 			{
@@ -256,7 +272,7 @@ class AccountsDashboard {
 				}
 			},
 			{
-				label: this.fiscal - 4,
+				label: this.fiscal,
 				title: "From Fiscal Year",
 				options: this.fiscals,
 				action: (selected_item) => {
@@ -282,15 +298,18 @@ class AccountsDashboard {
 		<span class="filter-label">Export Chart</span>
 	</button>`;
 		let $export_chart = $(export_btn);
+		if(chart_name == 'pl_chart'){
 		$export_chart.appendTo(this.wrapper.find(container));
 		$export_chart.on('click', (e) => {
-			if(chart_name == 'pl_chart'){
 				this.pl_chart.export();
-			}
-			else if(chart_name == 'cf_chart'){
+			});
+	}
+	else if(chart_name == 'cf_chart'){
+		$export_chart.appendTo(this.wrapper.find(container));
+		$export_chart.on('click', (e) => {
 				this.cf_chart.export();
-			}
-		});
+			});
+	}
 		filters.forEach(filter => {
 			let chart_filter_html = `<div class="chart-filter pull-right">
 			<a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -329,8 +348,69 @@ class AccountsDashboard {
 
 	}
 
+	create_cf_chart_customs() {
+		let customs = [
+			{
+				label: 'Navigable',
+				value: this.cf_customs.isNavigable,
+				action: (selected_item) => {
+					this.cf_customs.isNavigable = selected_item;
+					this.make_cf_chart();
+				}
+			},
+			{
+				label: 'Values over points',
+				value: this.cf_customs.valuesOverPoints,
+				action: (selected_item) => {
+					this.cf_customs.valuesOverPoints = selected_item;
+					this.make_cf_chart();
+				}
+			},
+			{
+				label: 'Fill region',
+				value: this.cf_customs.regionFill,
+				action: (selected_item) => {
+					this.cf_customs.regionFill = selected_item;
+					this.make_cf_chart();
+				}
+			},
+			{
+				label: 'Hide Dots',
+				value: this.cf_customs.hideDots,
+				action: (selected_item) => {
+					this.cf_customs.hideDots = selected_item;
+					this.make_cf_chart();
+				}
+			},
+			{
+				label: 'Hide Line',
+				value: this.cf_customs.hideLine,
+				action: (selected_item) => {
+					this.cf_customs.hideLine = selected_item;
+					this.make_cf_chart();
+				}
+			},
+			{
+				label: 'Heatline',
+				value: this.cf_customs.heatline,
+				action: (selected_item) => {
+					this.cf_customs.heatline = selected_item;
+					this.make_cf_chart();
+				}
+			},
+			{
+				label: 'Stacked',
+				value: this.cf_customs.stacked,
+				action: (selected_item) => {
+					this.cf_customs.stacked = selected_item;
+					this.make_cf_chart();
+				}
+			},
+		];
+		this.render_chart_customs(customs, '.cf-chart-container', 1);
+	}
+
 	create_pl_chart_customs() {
-		console.log(this.pl_customs.isNavigable)
 		let customs = [
 			{
 				label: 'Navigable',
@@ -394,12 +474,12 @@ class AccountsDashboard {
 
 	render_chart_customs(filters, container, append) {
 		filters.forEach(filter => {
-			let chart_filter_html = `<div class="checkbox">
+			let chart_filter_html = `<div class="checkbox inline-checkboxes">
 			<label><input type="checkbox">${filter.label}</label>
 		  </div>`;
 			let $chart_filter = $(chart_filter_html);
 			  $chart_filter.find('input[type="checkbox"]').prop('checked', filter.value);
-			  $chart_filter.prependTo(this.wrapper.find(container));
+			  $chart_filter.appendTo(this.wrapper.find(container));
 			$chart_filter.find("input[type='checkbox']").on('change', (e) => {
 				let $el = $(e.currentTarget);
 				let fieldname;
@@ -407,6 +487,120 @@ class AccountsDashboard {
 					fieldname = $el.attr('data-fieldname');
 				}
 				let selected_item = $el[0].checked;
+				filter.action(selected_item, fieldname);
+			});
+		});
+
+	}
+
+	create_sales_invoice_chart(data) {
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: data,
+    options: {
+		cutoutPercentage: 70,
+		legend: {
+			display: false
+		},
+    }
+});
+	}
+
+	create_purchase_invoice_chart(data) {
+var ctx = document.getElementById('purchaseI').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: data,
+    options: {
+		cutoutPercentage: 70,
+		legend: {
+			display: false
+		},
+    }
+});
+	}
+
+	get_sales_invoices() {
+		frappe.xcall('erpnext.accounts.page.accounts_dashboard.accounts_dashboard.get_invoices', {
+			invoice_type: 'Sales Invoice',
+			timespan: this.invoice_filter,
+			company: frappe.defaults.get_user_default("company")
+		}).then(r => {
+			this.sales_doughnut.empty().append(frappe.render_template('sales', {
+				type: 'Sales',
+				paid_total: r.paid_total,
+				unpaid_total: r.unpaid_total,
+				currency: r.currency
+			}));
+			this.create_sales_invoice_chart(r.data);
+		});
+	}
+
+	get_purchase_invoices() {
+		frappe.xcall('erpnext.accounts.page.accounts_dashboard.accounts_dashboard.get_invoices', {
+			invoice_type: 'Purchase Invoice',
+			timespan: this.invoice_filter,
+			company: frappe.defaults.get_user_default("company")
+		}).then(r => {
+			this.purchase_doughnut.empty().append(frappe.render_template('purchase', {
+				type: 'Purchases',
+				paid_total: r.paid_total,
+				unpaid_total: r.unpaid_total,
+				currency: r.currency
+			}));
+			this.create_purchase_invoice_chart(r.data);
+		});
+	}
+
+	create_invoice_filters() {
+		let filters = [
+			{
+				label: 'Last Year',
+				options: ['Last Year', 'Last Month', 'Last Quarter', 'Last Week'],
+				action: (selected_item) => {
+					this.invoice_filter = selected_item;
+					this.get_sales_invoices();
+					this.get_purchase_invoices();
+				}
+			}
+		];
+		this.render_invoice_filters(filters, '.invoice-chart-container', 1, 'none');
+	}
+
+	render_invoice_filters(filters, container, append, chart_name) {
+		filters.forEach(filter => {
+			let chart_filter_html = `<div class="chart-filter">
+			<a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<button class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="${filter.title}">
+						<span class="filter-label">${filter.label}</span>
+						<span class="caret"></span>
+					</button>
+				</a>`;
+			let options_html;
+
+			if (filter.fieldnames) {
+				options_html = filter.options.map((option, i) =>
+					`<li><a data-fieldname = "${filter.fieldnames[i]}">${option}</a></li>`).join('');
+			} else {
+				options_html = filter.options.map( option => `<li><a>${option}</a></li>`).join('');
+			}
+
+			let dropdown_html = chart_filter_html + `<ul class="dropdown-menu">${options_html}</ul></div>`;
+			let $chart_filter = $(dropdown_html);
+
+			if (append) {
+				$chart_filter.prependTo(this.wrapper.find(container));
+			} else $chart_filter.appendTo(this.wrapper.find(container));
+
+			$chart_filter.find('.dropdown-menu').on('click', 'li a', (e) => {
+				let $el = $(e.currentTarget);
+				let fieldname;
+				if ($el.attr('data-fieldname')) {
+					fieldname = $el.attr('data-fieldname');
+				}
+				let selected_item = $el.text();
+				$el.parents('.chart-filter').find('.filter-label').text(selected_item);
 				filter.action(selected_item, fieldname);
 			});
 		});

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <p>here</p>
+        <canvas id="myChart" width="100" height="100"></canvas>
+    </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+    <script>
+                var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Purple', 'Yellow'],
+        datasets: [{
+            label: '# of Votes',
+            data: [30, 70],
+            backgroundColor: [
+                '#4f1ebb',
+                '#fbb040'
+            ],
+        }]
+    },
+    options: {
+        cutoutPercentage: 70,
+        // maintainAspectRatio: false,
+        animation: {
+            animateRotate: true,
+            animateScale: true
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+    </script>
+</html>
