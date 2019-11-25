@@ -32,7 +32,7 @@ def get_bank_balances():
         gl_entries = frappe.db.get_all('GL Entry',
         fields = ['posting_date', 'debit', 'credit'],
         filters = [
-			dict(posting_date = ('<', to_date)),
+			dict(posting_date = ('<=', to_date)),
 			dict(account = ('=', a))
 		],
 		order_by = 'posting_date asc')
