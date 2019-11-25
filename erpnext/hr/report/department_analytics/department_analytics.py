@@ -5,8 +5,10 @@ from __future__ import unicode_literals
 import frappe
 from frappe import _
 
-def execute(filters=None):
+@frappe.whitelist()
+def execute(filters=None, dashboard=False):
 	if not filters: filters = {}
+	filters = frappe.parse_json(filters)
 	columns = get_columns()
 	employees = get_employees(filters)
 	departments_result = get_department(filters)
@@ -15,6 +17,8 @@ def execute(filters=None):
 		for department in departments_result:
 			departments.append(department)
 	chart = get_chart_data(departments,employees)
+	if dashboard:
+		return chart
 	return columns, employees, None, chart
 
 def get_columns():
@@ -37,7 +41,8 @@ def get_employees(filters):
 	gender, company from `tabEmployee` where status = 'Active' %s""" % conditions, as_list=1)
 
 def get_department(filters):
-	return frappe.db.sql("""select name from `tabDepartment`""" , as_list=1)
+	company = frappe.defaults.get_user_default("company")
+	return frappe.db.sql("""select name from `tabDepartment` where company = %s""" , company, as_list=1)
 	
 def get_chart_data(departments,employees):
 	if not departments:
@@ -55,6 +60,7 @@ def get_chart_data(departments,employees):
 			'datasets': [{'name': 'Employees','values': datasets}]
 		}
 	}
+	chart["total"] = sum(datasets)
 	chart["type"] = "bar"
 	return chart
 

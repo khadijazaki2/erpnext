@@ -4,6 +4,18 @@ from frappe import _
 def get_data():
 	return [
 		{
+			"label": _("Dashboard"),
+			"items": [
+				{
+					"type": "page",
+					"name": "hr-dashboard",
+					"label": _("HR Dashboard")
+				},
+			],
+			"link": "#hr-dashboard",
+			"icon": "/assets/frappe/images/icons/dashboard_grey.png"
+		},
+		{
 			"label": _("Employee"),
 			"items": [
 				{
