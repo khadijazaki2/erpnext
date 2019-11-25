@@ -11,11 +11,11 @@
 	margin-top: -20px;
 }
 
-.pl-chart-container .chart-filter, .cf-chart-container .chart-filter, .invoice-chart-container .chart-filter {
+.pl-chart-container .chart-filter, .cf-chart-container .chart-filter, .invoice-chart-container .chart-filter, .sales-chart-container .chart-filter {
 	z-index: 1;
 }
 
-.pl-chart-container, .cf-chart-container{
+.pl-chart-container, .cf-chart-container, .sales-chart-container{
 	background: #fff;
 	border-radius: 10px;
 	margin-top: 10px;
@@ -55,4 +55,9 @@
 .inline-checkboxes { 
     display: inline-block; 
     margin:10px;
-    }
+	}
+	
+.curr {
+	margin-left: 10px;
+	font-size: 20px;
+}

@@ -1,12 +1,21 @@
 <div style="height: 280px">
-    <h4>{{type}}</h4>
-        <canvas id="purchaseI" height="150"></canvas>
-        <h5>
-                <p style="margin-left: 10px;font-size: 20px;">{{currency}}{{paid_total}}</p>
-                <span class="indicator whitespace-nowrap blue"></span>Paid Invoices
+        <h4>{{type}}</h4>
+            <canvas id="purchaseI" height="150"></canvas>
+            <div class="col-md-6">
+                    <h5>
+                            <p class="curr">{{currency}}{{paid_total}}</p>
+                            <span class="indicator whitespace-nowrap blue"></span>Paid Invoices
+                        </h5>
+            </div>
+            <div clas="col-md-6">
+                    <h5>
+                            <p class="curr">{{currency}}{{unpaid_total}}</p>
+                            <span class="indicator whitespace-nowrap chart-grey"></span>Unpaid Invoices
+                        </h5>
+            </div>
+            <h5 style="margin-left: 15px;">
+                    <p class="curr">{{currency}}{{overdue_total}}</p>
+                <span class="indicator whitespace-nowrap red"></span>Overdue Invoices
             </h5>
-            <h5>
-                    <p style="margin-left: 10px;font-size: 20px;">{{currency}}{{unpaid_total}}</p>
-                <span class="indicator whitespace-nowrap chart-grey"></span>Unpaid Invoices
-            </h5>
-    </div>
+    
+        </div>

@@ -32,6 +32,67 @@ class AccountsDashboard {
 		this.create_invoice_filters();
 		this.render_profit_loss();
 		this.render_cash_flow();
+		this.render_sales();
+	}
+
+	get_sales() {
+		frappe.xcall('erpnext.accounts.page.accounts_dashboard.accounts_dashboard.get', {
+			chart: this.s_filters
+		}).then(chart => {
+			this.sales_chart.update(chart)
+		});
+	}
+
+	render_sales() {
+		this.s_filters = {
+			'timespan': 'Last Year',
+			'time_interval': 'Monthly',
+		}
+		this.sales_chart = new frappe.Chart('.sales-chart', {
+			type: 'bar', //customizable
+			height: 300,
+			colors: ['#4f1ebb'],
+			data: {
+				labels: [],
+	  
+			datasets: [
+			  {
+				name: 'Sales',
+				values: []
+			  }
+			]
+			},
+			tooltipOptions: {
+						formatTooltipX: d => d,
+						formatTooltipY: d => frappe.format(d, {
+							fieldtype: "Currency",
+						})
+					}
+		});
+		this.get_sales();
+		this.create_sales_chart_filters();
+	}
+
+	create_sales_chart_filters(){
+		let filters = [
+			{
+				label: 'Last Year',
+				options: ['Last Year', 'Last Quarter', 'Last Month'],
+				action: (selected_item) => {
+					this.s_filters.timespan = selected_item;
+					this.get_sales();
+				}
+			},
+			{
+				label: 'Monthly',
+				options: ['Yearly', 'Half-Yearly', 'Quarterly', 'Monthly'],
+				action: (selected_item) => {
+					this.s_filters.time_interval = selected_item;
+					this.get_sales();
+				}
+			},
+		];
+		this.render_chart_filters(filters, '.sales-chart-container', 1);
 	}
 
 	render_bank_balances() {
@@ -201,7 +262,7 @@ class AccountsDashboard {
 	make_cf_chart(){
 		this.cf_chart = new frappe.Chart('.cf-chart', {
 			type: this.cf_customs.type, //customizable
-			height: 300,
+			height: 200,
 			colors: ['#0e6333', '#ff5858', '#4f1ebb'],
 			isNavigable: this.cf_customs.isNavigable, //customizable
 			valuesOverPoints: this.cf_customs.valuesOverPoints, //customizable
@@ -531,6 +592,7 @@ var myChart = new Chart(ctx, {
 				type: 'Sales',
 				paid_total: r.paid_total,
 				unpaid_total: r.unpaid_total,
+				overdue_total: r.overdue_total,
 				currency: r.currency
 			}));
 			this.create_sales_invoice_chart(r.data);
@@ -547,6 +609,7 @@ var myChart = new Chart(ctx, {
 				type: 'Purchases',
 				paid_total: r.paid_total,
 				unpaid_total: r.unpaid_total,
+				overdue_total: r.overdue_total,
 				currency: r.currency
 			}));
 			this.create_purchase_invoice_chart(r.data);
