@@ -8,7 +8,6 @@ from frappe.desk.doctype.dashboard_chart.dashboard_chart import get_period_endin
 
 @frappe.whitelist()
 def get_bank_balances():
-    # frappe.cache().set_value('lala', 'jhkj')
     #get the default company
     company = frappe.defaults.get_user_default("company")
     if not company:
@@ -59,6 +58,7 @@ def get_invoices(invoice_type, timespan, company):
     currency = frappe.db.get_value("Currency", currency, 'symbol')
     to_date = nowdate()
     from_date = get_from_date_from_timespan(to_date, timespan)
+    frappe.cache().hset('i_span', frappe.session.user, timespan)
     paid_invoices = frappe.get_list(invoice_type, filters=[["company", "=", company], ["status", "=", "Paid"], ["posting_date", ">=", from_date], ["posting_date", "<=", to_date]], fields=['status', 'grand_total'])
     unpaid_invoices = frappe.get_list(invoice_type, filters=[["company", "=", company], ["status", "=", "Unpaid"], ["posting_date", ">=", from_date], ["posting_date", "<=", to_date]], fields=['status', 'grand_total'])
     overdue_invoices = frappe.get_list(invoice_type, filters=[["company", "=", company], ["status", "=", "Overdue"], ["posting_date", ">=", from_date], ["posting_date", "<=", to_date]], fields=['status', 'grand_total'])
@@ -92,6 +92,8 @@ def get(chart = None):
     chart = frappe._dict(frappe.parse_json(chart))
     timespan = chart.timespan
     timegrain = chart.time_interval
+    frappe.cache().hset('sa_span', frappe.session.user, timespan)
+    frappe.cache().hset('sa_interval', frappe.session.user, timegrain)
     account = 'Sales - ' + abbr
     to_date = nowdate()
     from_date = get_from_date_from_timespan(to_date, timespan)
@@ -105,3 +107,73 @@ def get(chart = None):
             "values": [r[1] for r in result]
             }]
     }
+
+@frappe.whitelist()
+def cache_dashboard_values():
+    frappe.cache().hset("i_span", frappe.session.user, "Last Year")
+    frappe.cache().hset('pl_span', frappe.session.user, 'Quarterly')
+    frappe.cache().hset('pl_chart', frappe.session.user, 'line')
+    frappe.cache().hset('pl_from', frappe.session.user, frappe.defaults.get_user_default("fiscal_year"))
+    frappe.cache().hset('pl_to', frappe.session.user, frappe.defaults.get_user_default("fiscal_year"))
+    frappe.cache().hset('pl_navigable', frappe.session.user, 1)
+    frappe.cache().hset('pl_values', frappe.session.user, 1)
+    frappe.cache().hset('pl_fill', frappe.session.user, 1)
+    frappe.cache().hset('pl_dots', frappe.session.user, 0)
+    frappe.cache().hset('pl_line', frappe.session.user, 0)
+    frappe.cache().hset('pl_heatline', frappe.session.user, 0)
+    frappe.cache().hset('pl_stack', frappe.session.user, 0)
+    frappe.cache().hset('cf_chart', frappe.session.user, 'bar')
+    frappe.cache().hset('cf_span', frappe.session.user, 'Yearly')
+    frappe.cache().hset('cf_from', frappe.session.user, frappe.defaults.get_user_default("fiscal_year"))
+    frappe.cache().hset('cf_to', frappe.session.user, frappe.defaults.get_user_default("fiscal_year"))
+    frappe.cache().hset('cf_navigable', frappe.session.user, 0)
+    frappe.cache().hset('cf_values', frappe.session.user, 1)
+    frappe.cache().hset('cf_fill', frappe.session.user, 1)
+    frappe.cache().hset('cf_dots', frappe.session.user, 0)
+    frappe.cache().hset('cf_line', frappe.session.user, 0)
+    frappe.cache().hset('cf_heatline', frappe.session.user, 0)
+    frappe.cache().hset('cf_stack', frappe.session.user, 0)
+    frappe.cache().hset('sa_span', frappe.session.user, 'Last Year')
+    frappe.cache().hset('sa_interval', frappe.session.user, 'Monthly')
+    return True
+ 
+
+@frappe.whitelist()
+def get_cache_values():
+    invoice_values, p_values, c_values, sales_values = {}, {}, {}, {}
+    invoice = ['i_span']
+    p_chart = [ 'pl_chart', 'pl_span', 'pl_from', 'pl_to',
+     'pl_navigable', 'pl_values', 'pl_fill', 'pl_dots', 'pl_line',
+     'pl_heatline', 'pl_stack']
+    c_chart = ['cf_chart', 'cf_span', 'cf_from', 'cf_to',
+     'cf_navigable', 'cf_values', 'cf_fill', 'cf_dots', 'cf_line', 'cf_heatline',
+     'cf_stack']
+    sales = ['sa_span', 'sa_interval']
+    for i in invoice:
+        v = frappe.cache().hget(i, frappe.session.user)
+        invoice_values[i] = v
+    print(invoice_values)
+    for p in p_chart:
+        v = frappe.cache().hget(p, frappe.session.user)
+        p_values[p] = v
+    for c in c_chart:
+        v = frappe.cache().hget(c, frappe.session.user)
+        c_values[c] = v
+    for s in sales:
+        v = frappe.cache().hget(s, frappe.session.user)
+        sales_values[s] = v
+    cached_values = {
+        'invoice_values': invoice_values,
+        'p_values': p_values,
+        'c_values': c_values,
+        'sales_values': sales_values
+    }
+    return cached_values
+
+@frappe.whitelist()
+def set_custom_filters(filtername, filtervalue):
+    if filtervalue == 'false':
+        filtervalue = 0
+    if filtervalue == 'true':
+        filtervalue = 1
+    frappe.cache().hset(filtername, frappe.session.user, filtervalue)

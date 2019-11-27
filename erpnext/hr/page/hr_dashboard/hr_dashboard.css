@@ -7,14 +7,10 @@
 	font-size: 11px;
 }
 
-.dept-chart-container .chart-filter {
-	z-index: 1;
-}
-
 .dept-chart-container{
 	background: #fff;
 	border-radius: 10px;
-	margin-top: 10px;
+	margin-top: -10px;
 }
 
 .chart-filter {
@@ -42,18 +38,33 @@
     margin-bottom: 10px;
 }
 
+.doughnuts-p{
+	background: #fff;
+	border-radius: 10px;
+	padding: 15px;
+	height: 135px;
+	text-align: center;
+}
+
 .doughnuts{
 	background: #fff;
 	border-radius: 10px;
 	padding: 15px;
 }
 
+
 .inline-checkboxes { 
     display: inline-block; 
     margin:10px;
 	}
 	
-.curr {
+.att {
 	margin-left: 10px;
 	font-size: 20px;
+	text-align: center;
+}
+
+.att2 {
+	margin-left: 10px;
+	font-size: 30px;
 }

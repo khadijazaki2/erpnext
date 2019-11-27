@@ -6,19 +6,10 @@ from frappe.core.page.dashboard.dashboard import get_from_date_from_timespan
 
 @frappe.whitelist()
 def test():
-    def _get_active_domains():
-        domains = frappe.get_all("Has Domain", filters={ "parent": "Domain Settings" },
-        fields=["domain"], distinct=True)
-        active_domains = [row.get("domain") for row in domains]
-        active_domains.append("")
-        return active_domains
-    # company = frappe.defaults.get_user_default("company")
-    # to_date = nowdate()
-    # from_date = get_from_date_from_timespan(to_date, 'Last Year')
-    # paid_invoices = frappe.get_list('Sales Invoice', filters=[["company", "=", company], ["status", "=", "Paid"], ["due_date", ">=", from_date], ["due_date", "<=", to_date]], fields=['status', 'grand_total'])
-    # unpaid_invoices = frappe.get_list('Sales Invoice', filters=[["company", "=", company], ["status", "=", "Unpaid"], ["due_date", ">=", from_date], ["due_date", "<=", to_date]], fields=['status', 'grand_total'])
-    # paid_total = sum(p['grand_total'] for p in paid_invoices)
-    # unpaid_total = sum(u['grand_total'] for u in unpaid_invoices)
-    # print(paid_invoices, unpaid_invoices, paid_total, unpaid_total)
-    abc = frappe.cache().get_value("lala")
-    print(abc)
+    company = frappe.defaults.get_user_default("company")
+    total_employees = frappe.db.sql("""select count(name) from `tabEmployee` where status = 'Active' and company = %s""", company, as_list=1)[0][0]
+    total_presents = frappe.db.sql("""select count(name) from `tab=Attendance` where attendance_date = CURDATE() and status = 'Present' company = %s""", company, as_list=1)[0][0]
+    total_leaves = frappe.db.sql("""select count(name) from `tab=Attendance` where attendance_date = CURDATE() and status = 'On Leave' company = %s""", company, as_list=1)[0][0]
+    total_half = frappe.db.sql("""select count(name) from `tab=Attendance` where attendance_date = CURDATE() and status = 'Half Day' company = %s""", company, as_list=1)[0][0]
+    total_absents = total_employees - (total_presents + total_leaves + total_half)
+    print(total_presents, total_absents, total_employees, total_half)

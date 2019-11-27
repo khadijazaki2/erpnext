@@ -9,7 +9,6 @@ from erpnext.accounts.report.financial_statements import (get_period_list, get_c
 
 @frappe.whitelist()
 def execute(filters=None, dashboard=False):
-	# frappe.throw(_("{0}").format(filters))
 	filters = frappe.parse_json(filters)
 	period_list = get_period_list(filters.from_fiscal_year, filters.to_fiscal_year,
 		filters.periodicity, filters.accumulated_values, filters.company)
@@ -35,6 +34,9 @@ def execute(filters=None, dashboard=False):
 	chart = get_chart_data(filters, columns, income, expense, net_profit_loss)
 
 	if dashboard:
+		frappe.cache().hset('pl_from', frappe.session.user, filters.from_fiscal_year)
+		frappe.cache().hset('pl_to', frappe.session.user, filters.to_fiscal_year)
+		frappe.cache().hset('pl_span', frappe.session.user, filters.periodicity)
 		return chart
 	return columns, data, None, chart
 

@@ -21,18 +21,96 @@ class AccountsDashboard {
 	}
 
 	show() {
+		this.$user_search_button = this.page.set_secondary_action('Set to Default', () => {
+			frappe.xcall('erpnext.accounts.page.accounts_dashboard.accounts_dashboard.cache_dashboard_values', {
+				async: false,
+			}).then(chart => {
+				this.show();
+			});
+		});
 		this.main_section.empty().append(frappe.render_template('accounts_dashboard'));
 		this.bank_balances = this.main_section.find('.bank-balances');
 		this.sales_doughnut = this.main_section.find('.sales-doughnut');
 		this.purchase_doughnut = this.main_section.find('.purchase-doughnut');
-		this.invoice_filter = 'Last Year'
-		this.render_bank_balances();
-		this.get_sales_invoices();
-		this.get_purchase_invoices();
-		this.create_invoice_filters();
-		this.render_profit_loss();
-		this.render_cash_flow();
-		this.render_sales();
+		this.get_cached_filters();
+	}
+
+	get_cached_filters() {
+		  return frappe.call({
+			method: 'erpnext.accounts.page.accounts_dashboard.accounts_dashboard.get_cache_values',
+			async: false,
+			callback: r => {
+				console.log(r)
+				if(!r.message.sales_values.sa_span){
+					this.set_defaults();
+					console.log('yes')
+				}
+				else{
+					this.s_filters = {
+						'timespan': r.message.sales_values.sa_span,
+						'time_interval': r.message.sales_values.sa_interval,
+					}
+					this.invoice_filter = r.message.invoice_values.i_span;
+					this.pl_filters = {
+						'company': frappe.defaults.get_user_default("company"),
+						'to_fiscal_year': r.message.p_values.pl_to,
+						'from_fiscal_year': r.message.p_values.pl_from,
+						'periodicity': r.message.p_values.pl_span
+					};
+					this.pl_customs = {
+						type: r.message.p_values.pl_chart,
+						isNavigable: r.message.p_values.pl_navigable, 
+						valuesOverPoints: r.message.p_values.pl_values,
+						regionFill: r.message.p_values.pl_fill,
+						hideDots: r.message.p_values.pl_dots,
+						hideLine: r.message.p_values.pl_line,
+						heatline: r.message.p_values.pl_heatline,
+						stacked: r.message.p_values.pl_stack
+					}
+					this.cf_filters = {
+						'company': frappe.defaults.get_user_default("company"),
+						'to_fiscal_year': r.message.c_values.cf_to,
+						'from_fiscal_year': r.message.c_values.cf_from,
+						'periodicity': r.message.c_values.cf_span
+					};
+					this.cf_customs = {
+						type: r.message.c_values.cf_chart,
+						isNavigable: r.message.c_values.cf_navigable, 
+						valuesOverPoints: r.message.c_values.cf_values,
+						regionFill: r.message.c_values.cf_fill,
+						hideDots: r.message.c_values.cf_dots,
+						hideLine: r.message.c_values.cf_line,
+						heatline: r.message.c_values.cf_heatline,
+						stacked: r.message.c_values.cf_stack
+					}
+					this.render_bank_balances();
+					this.get_sales_invoices();
+					this.get_purchase_invoices();
+					this.create_invoice_filters();
+					this.render_profit_loss();
+					this.render_cash_flow();
+					this.render_sales();
+			}
+			},
+		  })
+	}
+
+	
+	set_defaults() {
+		frappe.xcall('erpnext.accounts.page.accounts_dashboard.accounts_dashboard.cache_dashboard_values', {
+			async: false,
+		}).then(chart => {
+			this.get_cached_filters();
+		});
+	}
+
+	set_custom_filters(filter_name, filter_value) {
+		console.log(filter_value)
+		frappe.xcall('erpnext.accounts.page.accounts_dashboard.accounts_dashboard.set_custom_filters', {
+			filtername: filter_name,
+			filtervalue: filter_value
+		}).then(chart => {
+		});
 	}
 
 	get_sales() {
@@ -44,10 +122,6 @@ class AccountsDashboard {
 	}
 
 	render_sales() {
-		this.s_filters = {
-			'timespan': 'Last Year',
-			'time_interval': 'Monthly',
-		}
 		this.sales_chart = new frappe.Chart('.sales-chart', {
 			type: 'bar', //customizable
 			height: 300,
@@ -76,7 +150,7 @@ class AccountsDashboard {
 	create_sales_chart_filters(){
 		let filters = [
 			{
-				label: 'Last Year',
+				label: this.s_filters.timespan,
 				options: ['Last Year', 'Last Quarter', 'Last Month'],
 				action: (selected_item) => {
 					this.s_filters.timespan = selected_item;
@@ -84,8 +158,8 @@ class AccountsDashboard {
 				}
 			},
 			{
-				label: 'Monthly',
-				options: ['Yearly', 'Half-Yearly', 'Quarterly', 'Monthly'],
+				label: this.s_filters.time_interval,
+				options: ['Quarterly', 'Monthly', 'Weekly', 'Daily'],
 				action: (selected_item) => {
 					this.s_filters.time_interval = selected_item;
 					this.get_sales();
@@ -116,30 +190,13 @@ class AccountsDashboard {
 }
 
 	render_profit_loss() {
-		this.fiscal = frappe.defaults.get_user_default("fiscal_year")
-		this.pl_filters = {
-			'company': frappe.defaults.get_user_default("company"),
-			'to_fiscal_year': this.fiscal,
-			'from_fiscal_year': this.fiscal,
-			'periodicity': 'Quarterly'
-		};
-		this.pl_customs = {
-			type: 'line',
-			isNavigable: 1, 
-			valuesOverPoints: 1,
-			regionFill: 1,
-			hideDots: 0,
-			hideLine: 0,
-			heatline: 0,
-			stacked: 0
-		}
 		this.make_pl_chart();
-		// this.update_pl_chart_data();
 		this.create_pl_chart_filters();
 		this.create_pl_chart_customs();
 	}
 
 	make_pl_chart(){
+		console.log(this.pl_customs.isNavigable)
 		this.pl_chart = new frappe.Chart('.pl-chart', {
 			type: this.pl_customs.type, //customizable
 			height: 300,
@@ -198,15 +255,16 @@ class AccountsDashboard {
 		this.get_fiscal_years();
 		let filters = [
 			{
-				label: 'line',
+				label: this.pl_customs.type,
 				options: ['line', 'bar'],
 				action: (selected_item) => {
 					this.pl_customs.type = selected_item
 					this.make_pl_chart();
+					this.set_custom_filters('pl_chart', this.pl_customs.type)
 				}
 			},
 			{
-				label: 'Quarterly',
+				label: this.pl_filters.periodicity,
 				options: ['Yearly', 'Half-Yearly', 'Quarterly', 'Monthly'],
 				action: (selected_item) => {
 					this.pl_filters.periodicity = selected_item;
@@ -214,7 +272,7 @@ class AccountsDashboard {
 				}
 			},
 			{
-				label: this.fiscal,
+				label: this.pl_filters.from_fiscal_year,
 				title: "From Fiscal Year",
 				options: this.fiscals,
 				action: (selected_item) => {
@@ -223,7 +281,7 @@ class AccountsDashboard {
 				}
 			},
 			{
-				label: this.fiscal,
+				label: this.pl_filters.to_fiscal_year,
 				title: "To Fiscal Year",
 				options: this.fiscals,
 				action: (selected_item) => {
@@ -236,23 +294,6 @@ class AccountsDashboard {
 	}
 
 	render_cash_flow() {
-		this.fiscal = frappe.defaults.get_user_default("fiscal_year")
-		this.cf_filters = {
-			'company': frappe.defaults.get_user_default("company"),
-			'to_fiscal_year': this.fiscal,
-			'from_fiscal_year': this.fiscal,
-			'periodicity': 'Yearly'
-		};
-		this.cf_customs = {
-			type: 'bar',
-			isNavigable: 0, 
-			valuesOverPoints: 1,
-			regionFill: 1,
-			hideDots: 0,
-			hideLine: 0,
-			heatline: 0,
-			stacked: 0
-		}
 		this.make_cf_chart();
 		this.create_cf_chart_filters();
 		this.create_cf_chart_customs();
@@ -317,15 +358,16 @@ class AccountsDashboard {
 		this.get_fiscal_years();
 		let filters = [
 			{
-				label: 'bar',
+				label: this.cf_customs.type,
 				options: ['bar', 'line'],
 				action: (selected_item) => {
 					this.cf_customs.type = selected_item
 					this.make_cf_chart();
+					this.set_custom_filters('cf_chart', this.cf_customs.type)
 				}
 			},
 			{
-				label: 'Yearly',
+				label: this.cf_filters.periodicity,
 				options: ['Yearly', 'Half-Yearly', 'Quarterly', 'Monthly'],
 				action: (selected_item) => {
 					this.cf_filters.periodicity = selected_item;
@@ -333,7 +375,7 @@ class AccountsDashboard {
 				}
 			},
 			{
-				label: this.fiscal,
+				label: this.cf_filters.from_fiscal_year,
 				title: "From Fiscal Year",
 				options: this.fiscals,
 				action: (selected_item) => {
@@ -342,7 +384,7 @@ class AccountsDashboard {
 				}
 			},
 			{
-				label: this.fiscal,
+				label: this.cf_filters.to_fiscal_year,
 				title: "To Fiscal Year",
 				options: this.fiscals,
 				action: (selected_item) => {
@@ -417,6 +459,7 @@ class AccountsDashboard {
 				action: (selected_item) => {
 					this.cf_customs.isNavigable = selected_item;
 					this.make_cf_chart();
+					this.set_custom_filters('cf_navigable', this.cf_customs.isNavigable)
 				}
 			},
 			{
@@ -425,6 +468,7 @@ class AccountsDashboard {
 				action: (selected_item) => {
 					this.cf_customs.valuesOverPoints = selected_item;
 					this.make_cf_chart();
+					this.set_custom_filters('cf_values', this.cf_customs.valuesOverPoints)
 				}
 			},
 			{
@@ -433,6 +477,7 @@ class AccountsDashboard {
 				action: (selected_item) => {
 					this.cf_customs.regionFill = selected_item;
 					this.make_cf_chart();
+					this.set_custom_filters('cf_fill', this.cf_customs.regionFill)
 				}
 			},
 			{
@@ -441,6 +486,7 @@ class AccountsDashboard {
 				action: (selected_item) => {
 					this.cf_customs.hideDots = selected_item;
 					this.make_cf_chart();
+					this.set_custom_filters('cf_dots', this.cf_customs.hideDots)
 				}
 			},
 			{
@@ -449,6 +495,7 @@ class AccountsDashboard {
 				action: (selected_item) => {
 					this.cf_customs.hideLine = selected_item;
 					this.make_cf_chart();
+					this.set_custom_filters('cf_line', this.cf_customs.hideLine)
 				}
 			},
 			{
@@ -457,6 +504,7 @@ class AccountsDashboard {
 				action: (selected_item) => {
 					this.cf_customs.heatline = selected_item;
 					this.make_cf_chart();
+					this.set_custom_filters('cf_heatline', this.cf_customs.heatline)
 				}
 			},
 			{
@@ -465,6 +513,7 @@ class AccountsDashboard {
 				action: (selected_item) => {
 					this.cf_customs.stacked = selected_item;
 					this.make_cf_chart();
+					this.set_custom_filters('cf_stack', this.cf_customs.stacked)
 				}
 			},
 		];
@@ -472,6 +521,7 @@ class AccountsDashboard {
 	}
 
 	create_pl_chart_customs() {
+		console.log(this.pl_customs.isNavigable)
 		let customs = [
 			{
 				label: 'Navigable',
@@ -479,6 +529,7 @@ class AccountsDashboard {
 				action: (selected_item) => {
 					this.pl_customs.isNavigable = selected_item;
 					this.make_pl_chart();
+					this.set_custom_filters('pl_navigable', this.pl_customs.isNavigable)
 				}
 			},
 			{
@@ -487,6 +538,7 @@ class AccountsDashboard {
 				action: (selected_item) => {
 					this.pl_customs.valuesOverPoints = selected_item;
 					this.make_pl_chart();
+					this.set_custom_filters('pl_values', this.pl_customs.valuesOverPoints)
 				}
 			},
 			{
@@ -495,6 +547,7 @@ class AccountsDashboard {
 				action: (selected_item) => {
 					this.pl_customs.regionFill = selected_item;
 					this.make_pl_chart();
+					this.set_custom_filters('pl_fill', this.pl_customs.regionFill)
 				}
 			},
 			{
@@ -503,6 +556,7 @@ class AccountsDashboard {
 				action: (selected_item) => {
 					this.pl_customs.hideDots = selected_item;
 					this.make_pl_chart();
+					this.set_custom_filters('pl_dots', this.pl_customs.hideDots)
 				}
 			},
 			{
@@ -511,6 +565,7 @@ class AccountsDashboard {
 				action: (selected_item) => {
 					this.pl_customs.hideLine = selected_item;
 					this.make_pl_chart();
+					this.set_custom_filters('pl_line', this.pl_customs.hideLine)
 				}
 			},
 			{
@@ -519,6 +574,7 @@ class AccountsDashboard {
 				action: (selected_item) => {
 					this.pl_customs.heatline = selected_item;
 					this.make_pl_chart();
+					this.set_custom_filters('pl_heatline', this.pl_customs.heatline)
 				}
 			},
 			{
@@ -527,6 +583,7 @@ class AccountsDashboard {
 				action: (selected_item) => {
 					this.pl_customs.stacked = selected_item;
 					this.make_pl_chart();
+					this.set_custom_filters('pl_stack', this.pl_customs.stacked)
 				}
 			},
 		];
@@ -619,7 +676,7 @@ var myChart = new Chart(ctx, {
 	create_invoice_filters() {
 		let filters = [
 			{
-				label: 'Last Year',
+				label: this.invoice_filter,
 				options: ['Last Year', 'Last Month', 'Last Quarter', 'Last Week'],
 				action: (selected_item) => {
 					this.invoice_filter = selected_item;

@@ -29,7 +29,8 @@ def get_columns():
 	]
 
 def get_conditions(filters):
-	conditions = ""
+	company = frappe.defaults.get_user_default("company")
+	conditions = "and company = '" + company + "' "
 	if filters.get("department"): conditions += " and department = '%s'" % \
 		filters["department"].replace("'", "\\'")
 	return conditions
@@ -60,7 +61,9 @@ def get_chart_data(departments,employees):
 			'datasets': [{'name': 'Employees','values': datasets}]
 		}
 	}
-	chart["total"] = sum(datasets)
+	company = frappe.defaults.get_user_default("company")
+	total_employees = frappe.db.sql("""select count(name) from `tabEmployee` where status = 'Active' and company = %s""", company, as_list=1)[0][0]
+	chart["total"] = total_employees
 	chart["type"] = "bar"
 	return chart
 

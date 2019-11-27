@@ -23,7 +23,11 @@ class HrDashboard {
 	show() {
 		this.main_section.empty().append(frappe.render_template('hr_dashboard'));
 		this.dept = this.main_section.find('.dept-analytics');
+		this.attendance_doughnut = this.main_section.find('.attendance');
+		this.pending_values = this.main_section.find('.pending');
 		this.get_dept();
+		this.get_attendance();
+		this.get_pendings();
 	}
 
 	get_dept() {
@@ -39,10 +43,10 @@ class HrDashboard {
 
 	make_dept_chart(data){
 		this.dept_chart = new frappe.Chart('.dept-chart', {
-			type: 'bar', //customizable
+			type: 'bar',
 			height: 200,
 			colors: ['#4f1ebb'],
-			valuesOverPoints: 1, //customizable
+			valuesOverPoints: 1,
 			data: data,
 			tooltipOptions: {
 						formatTooltipX: d => d,
@@ -51,4 +55,42 @@ class HrDashboard {
 		});
 	}
 
+	create_presence_chart(data) {
+		var ctx = document.getElementById('presence').getContext('2d');
+		var myChart = new Chart(ctx, {
+			type: 'doughnut',
+			data: data,
+			options: {
+				cutoutPercentage: 70,
+				legend: {
+					display: false
+				},
+			}
+		});
+	}
+		
+	get_attendance() {
+		frappe.xcall('erpnext.hr.page.hr_dashboard.hr_dashboard.get_current_presence', {
+		}).then(r => {
+			this.attendance_doughnut.empty().append(frappe.render_template('presence', {
+				absent: r.absent,
+				present: r.present,
+				leave: r.leave,
+				half: r.half
+			}));
+			this.create_presence_chart(r.data);
+		});
+	}
+
+	get_pendings() {
+		frappe.xcall('erpnext.hr.page.hr_dashboard.hr_dashboard.get_pendings', {
+		}).then(r => {
+			this.pending_values.empty().append(frappe.render_template('pending', {
+				att: r.pending_att,
+				late: r.late_entry,
+				early: r.early_exit,
+				leave: r.leave_app
+			}));
+		});
+	}
 }
