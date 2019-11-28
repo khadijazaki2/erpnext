@@ -62,6 +62,7 @@ class HrDashboard {
 			data: data,
 			options: {
 				cutoutPercentage: 70,
+				responsive: false,
 				legend: {
 					display: false
 				},

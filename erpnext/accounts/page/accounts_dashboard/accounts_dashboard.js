@@ -618,6 +618,7 @@ var myChart = new Chart(ctx, {
     data: data,
     options: {
 		cutoutPercentage: 70,
+		responsive: false,
 		legend: {
 			display: false
 		},
@@ -632,6 +633,7 @@ var myChart = new Chart(ctx, {
     data: data,
     options: {
 		cutoutPercentage: 70,
+		responsive: false,
 		legend: {
 			display: false
 		},
