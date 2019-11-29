@@ -21,10 +21,21 @@ def get_data():
 			"module_name": "Accounting",
 			"category": "Modules",
 			"label": _("Accounting"),
+			"link": '#accounts-dashboard',
 			"color": "#3498db",
 			"icon": "/assets/frappe/images/main_icons/accounting.png",
 			"type": "module",
 			"description": "Accounts, billing, payments, cost center and budgeting."
+			# "module_name": 'Accounting',
+			# "category": "Modules",
+			# "label": _('Accounting'),
+			# "icon": "/assets/frappe/images/main_icons/accounting.png",
+			# "type": 'link',
+			# "link": '#accounts-dashboard',
+			# "color": '#FF4136',
+			# 'standard': 1,
+			# 'idx': 15,
+			# "description": "Build your profile and share posts with other users."
 		},
 		{
 			"module_name": "Selling",
@@ -94,6 +105,7 @@ def get_data():
 			"category": "Modules",
 			"label": _("Human Resources"),
 			"color": "#2ecc71",
+			"link": '#hr-dashboard',
 			"icon": "/assets/frappe/images/main_icons/human_resources.png",
 			"type": "module",
 			"description": "Employees, attendance, payroll, leaves and shifts."

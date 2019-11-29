@@ -4,7 +4,7 @@
  "docstatus": 0,
  "doctype": "Page",
  "idx": 0,
- "modified": "2019-11-18 05:43:16.085756",
+ "modified": "2019-11-29 00:18:24.191168",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "accounts-dashboard",
@@ -16,6 +16,9 @@
   },
   {
    "role": "Accounts Manager"
+  },
+  {
+   "role": "Accounts User"
   }
  ],
  "script": null,

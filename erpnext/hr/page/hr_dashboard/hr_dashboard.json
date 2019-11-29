@@ -4,7 +4,7 @@
  "docstatus": 0,
  "doctype": "Page",
  "idx": 0,
- "modified": "2019-11-25 05:43:06.480755",
+ "modified": "2019-11-29 00:18:16.294462",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "hr-dashboard",
@@ -16,6 +16,9 @@
   },
   {
    "role": "HR Manager"
+  },
+  {
+   "role": "HR User"
   }
  ],
  "script": null,
