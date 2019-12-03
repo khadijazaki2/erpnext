@@ -1,21 +1,21 @@
 <div class="chart-h">
-    <h4 style="margin-bottom: -8px;"><a href="#List/Sales%20Invoice/List">{{type}}</a></h4>
-        <canvas id="myChart" height="150"></canvas>
-        <div class="col-xs-6">
-                <h5>
-                        <p class="curr">{{currency}}{{paid_total}}</p>
-                        <span class="indicator whitespace-nowrap blue"></span>Paid Invoices
-                    </h5>
+        <h4 style="margin-bottom: -8px;"><a href="#List/Sales%20Invoice/List">{{type}}</a></h4>
+            <canvas id="myChart" height="150"></canvas>
+            <div class="col-xs-6">
+                    <h5>
+                            <p class="curr">{{currency}}{{paid_total}}</p>
+                            <span class="indicator whitespace-nowrap blue"></span>Paid Invoices
+                        </h5>
+            </div>
+            <div clas="col-xs-6">
+                    <h5>
+                            <p class="curr">{{currency}}{{unpaid_total}}</p>
+                            <span class="indicator whitespace-nowrap chart-grey"></span>Unpaid Invoices
+                        </h5>
+            </div>
+            <h5 style="margin-left: 15px;">
+                    <p class="curr">{{currency}}{{overdue_total}}</p>
+                <span class="indicator whitespace-nowrap red"></span>Overdue Invoices
+            </h5>
+    
         </div>
-        <div clas="col-xs-6">
-                <h5>
-                        <p class="curr">{{currency}}{{unpaid_total}}</p>
-                        <span class="indicator whitespace-nowrap chart-grey"></span>Unpaid Invoices
-                    </h5>
-        </div>
-        <h5 style="margin-left: 15px;">
-                <p class="curr">{{currency}}{{overdue_total}}</p>
-            <span class="indicator whitespace-nowrap red"></span>Overdue Invoices
-        </h5>
-
-    </div>

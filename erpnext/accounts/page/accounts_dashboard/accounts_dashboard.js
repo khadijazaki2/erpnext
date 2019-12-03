@@ -83,13 +83,18 @@ class AccountsDashboard {
 						heatline: r.message.c_values.cf_heatline,
 						stacked: r.message.c_values.cf_stack
 					}
+					this.render_profit_loss();
+					if (frappe.user.has_role('Administrator') || frappe.user.has_role('System Manager') || frappe.user.has_role('Accounts Manager') || frappe.user.has_role('Accounts User')){
 					this.render_bank_balances();
+					this.main_section.find('.invoice-c').removeClass('hide');
 					this.get_sales_invoices();
 					this.get_purchase_invoices();
 					this.create_invoice_filters();
-					this.render_profit_loss();
+					this.main_section.find('.cf-chart-container').removeClass('hide');
 					this.render_cash_flow();
+					this.main_section.find('.sales-chart-container').removeClass('hide');
 					this.render_sales();
+					}
 			}
 			},
 		  })

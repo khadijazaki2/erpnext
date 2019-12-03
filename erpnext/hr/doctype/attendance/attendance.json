@@ -173,7 +173,7 @@
  "icon": "fa fa-ok",
  "idx": 1,
  "is_submittable": 1,
- "modified": "2019-07-29 20:35:40.845422",
+ "modified": "2019-12-03 06:20:00.945134",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Attendance",
@@ -219,6 +219,15 @@
    "share": 1,
    "submit": 1,
    "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee",
+   "share": 1
   }
  ],
  "search_fields": "employee,employee_name,attendance_date,status",

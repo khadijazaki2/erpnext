@@ -13,9 +13,9 @@
 	margin-top: -10px;
 }
 
-.chart-filter {
+.chart-filter2 {
 	position: relative;
-	top: 5px;
+	top: -35px;
 	margin-right: 10px;
 }
 
@@ -79,4 +79,32 @@
 	.doughnuts-p {
 		margin-left: -15px;
 	}
+}
+
+.open-chart-container .chart-filter2, .offer-chart-container .chart-filter2, .app-chart-container .chart-filter2{
+	z-index: 1;
+}
+
+
+.chart-h2 {
+	height: 328px;
+}
+
+.chart-head {
+	background: #fff;
+	margin-top: 10px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+}
+
+.curr {
+	margin-left: 10px;
+	font-size: 20px;
+}
+
+.doughnut2{
+	background: #fff;
+	border-radius: 10px;
+	height: 132px;
+	padding: 15px;
 }

@@ -1,0 +1,41 @@
+<div class="col-sm-4 doughnuts" style="margin-top: -10px;">
+    <div class="chart-h2">
+            <h4><a href="#List/Job%20Applicant/List">Job Applicants - {{total}}</a></h4>
+    <div class="app-chart-container"></div>
+    <canvas id="appChart" height="150"></canvas>
+    <div class="row">
+    <div class="col-xs-6">
+            <h5>
+                    <span class="indicator whitespace-nowrap chart-grey"></span>Open
+                    <span class="curr">{{open}}</span>
+                </h5>
+    </div>
+    <div clas="col-xs-6">
+            <h5>
+                    <span class="indicator whitespace-nowrap blue"></span>Replied
+                    <span class="curr">{{replied}}</span>
+                </h5>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-6">
+    <h5>
+        <span class="indicator whitespace-nowrap light-blue"></span>Hold
+        <span class="curr">{{hold}}</span>
+    </h5>
+    </div>
+    <div clas="col-xs-6">
+            <h5>
+                    <span class="indicator whitespace-nowrap sea-green"></span>Accepted
+                    <span class="curr">{{accepted}}</span>
+                </h5>
+    </div>
+</div>
+    <div clas="col-xs-12">
+            <h5>
+                    <span class="indicator whitespace-nowrap red"></span>Rejected
+                    <span class="curr">{{rejected}}</span>
+                </h5>
+    </div>
+    </div>
+</div>

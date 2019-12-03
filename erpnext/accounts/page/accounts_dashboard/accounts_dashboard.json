@@ -4,7 +4,7 @@
  "docstatus": 0,
  "doctype": "Page",
  "idx": 0,
- "modified": "2019-11-29 00:18:24.191168",
+ "modified": "2019-11-29 07:10:11.761852",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "accounts-dashboard",
@@ -19,6 +19,15 @@
   },
   {
    "role": "Accounts User"
+  },
+  {
+   "role": "Purchase User"
+  },
+  {
+   "role": "Auditor"
+  },
+  {
+   "role": "Sales User"
   }
  ],
  "script": null,

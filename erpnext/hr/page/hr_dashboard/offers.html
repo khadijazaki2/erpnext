@@ -1,0 +1,26 @@
+<div class="col-sm-4 doughnuts" style="margin-top: -10px;">
+                <div class="chart-h2">
+                                <h4><a href="#List/Job%20Offer/List">Job Offers - {{total}}</a></h4>
+        <div class="offer-chart-container"></div>
+        <canvas id="offerChart" height="150"></canvas>
+        <div class="col-xs-6">
+                        <h5>
+                                <span class="indicator whitespace-nowrap sea-green"></span>
+                                Accepted<span class="curr">{{accepted}}</span>
+                            </h5>
+                </div>
+                <div clas="col-xs-6">
+                        <h5>
+                                <span class="indicator whitespace-nowrap red"></span>
+                                Rejected<span class="curr">{{rejected}}</span>
+                            </h5>
+                </div>
+                
+                <div class="col-xs-12">
+                <h5>
+                    <span class="indicator whitespace-nowrap chart-grey"></span>Awaiting Response
+                    <span class="curr">{{awaiting}}</span>
+                </h5>
+                </div>
+        </div>
+</div>
