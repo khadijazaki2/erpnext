@@ -11,7 +11,7 @@
 	margin-top: -20px;
 }
 
-.pl-chart-container .chart-filter, .cf-chart-container .chart-filter, .invoice-chart-container .chart-filter, .sales-chart-container .chart-filter {
+.pl-chart-container .chart-filter, .cf-chart-container .chart-filter, .purchase-chart-filter .chart-filter, .sales-chart-filter .chart-filter, .sales-chart-container .chart-filter {
 	z-index: 1;
 }
 
@@ -63,17 +63,10 @@
 }
 
 .chart-h {
-	height: 280px;
-}
-
-@media (min-width: 1440px) {
-	.bank{
-		height: 367px;
-	}
-
-	.chart-h {
-		height: 300px;
-	}
+	height: 350px;
+	background: #fff;
+    padding: 15px;
+    border-radius: 10px;
 }
 
 @media (max-width: 991px) {
@@ -82,15 +75,23 @@
 	}
 
 	.chart-h {
-		height: 300px;
+		margin-bottom: 10px;
 	}
 
 	.bank-col{
-		margin-right: -15px;
 		margin-bottom: 10px;
 	}
 
 	.doughnuts{
 		margin-left: 15px;
 	}
+}
+
+.invoice-filter{
+	background: #fff;
+    margin-bottom: 14px;
+    padding: 5px;
+    border-radius: 10px;
+    margin-top: -5px;
+    margin-right: 0px;
 }

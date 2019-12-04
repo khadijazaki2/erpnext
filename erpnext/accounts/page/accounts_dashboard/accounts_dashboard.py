@@ -58,7 +58,10 @@ def get_invoices(invoice_type, timespan, company):
     currency = frappe.db.get_value("Currency", currency, 'symbol')
     to_date = nowdate()
     from_date = get_from_date_from_timespan(to_date, timespan)
-    frappe.cache().hset('i_span', frappe.session.user, timespan)
+    if invoice_type == 'Sales Invoice':
+        frappe.cache().hset('i_span', frappe.session.user, timespan)
+    if invoice_type == 'Purchase Invoice':
+        frappe.cache().hset('ip_span', frappe.session.user, timespan)
     paid_invoices = frappe.get_list(invoice_type, filters=[["company", "=", company], ["status", "=", "Paid"], ["posting_date", ">=", from_date], ["posting_date", "<=", to_date]], fields=['status', 'grand_total'])
     unpaid_invoices = frappe.get_list(invoice_type, filters=[["company", "=", company], ["status", "=", "Unpaid"], ["posting_date", ">=", from_date], ["posting_date", "<=", to_date]], fields=['status', 'grand_total'])
     overdue_invoices = frappe.get_list(invoice_type, filters=[["company", "=", company], ["status", "=", "Overdue"], ["posting_date", ">=", from_date], ["posting_date", "<=", to_date]], fields=['status', 'grand_total'])
@@ -111,6 +114,7 @@ def get(chart = None):
 @frappe.whitelist()
 def cache_dashboard_values():
     frappe.cache().hset("i_span", frappe.session.user, "Last Year")
+    frappe.cache().hset("ip_span", frappe.session.user, "Last Year")
     frappe.cache().hset('pl_span', frappe.session.user, 'Quarterly')
     frappe.cache().hset('pl_chart', frappe.session.user, 'line')
     frappe.cache().hset('pl_from', frappe.session.user, frappe.defaults.get_user_default("fiscal_year"))
@@ -141,7 +145,7 @@ def cache_dashboard_values():
 @frappe.whitelist()
 def get_cache_values():
     invoice_values, p_values, c_values, sales_values = {}, {}, {}, {}
-    invoice = ['i_span']
+    invoice = ['i_span', 'ip_span']
     p_chart = [ 'pl_chart', 'pl_span', 'pl_from', 'pl_to',
      'pl_navigable', 'pl_values', 'pl_fill', 'pl_dots', 'pl_line',
      'pl_heatline', 'pl_stack']

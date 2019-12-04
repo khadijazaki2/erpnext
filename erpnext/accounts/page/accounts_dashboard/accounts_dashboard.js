@@ -40,17 +40,17 @@ class AccountsDashboard {
 			method: 'erpnext.accounts.page.accounts_dashboard.accounts_dashboard.get_cache_values',
 			async: false,
 			callback: r => {
-				console.log(r)
 				if(!r.message.sales_values.sa_span){
 					this.set_defaults();
-					console.log('yes')
 				}
 				else{
 					this.s_filters = {
 						'timespan': r.message.sales_values.sa_span,
 						'time_interval': r.message.sales_values.sa_interval,
 					}
-					this.invoice_filter = r.message.invoice_values.i_span;
+					this.sinvoice_filter = r.message.invoice_values.i_span;
+					this.pinvoice_filter = r.message.invoice_values.ip_span;
+					console.log(this.sinvoice_filter, this.pinvoice_filter)
 					this.pl_filters = {
 						'company': frappe.defaults.get_user_default("company"),
 						'to_fiscal_year': r.message.p_values.pl_to,
@@ -84,16 +84,18 @@ class AccountsDashboard {
 						stacked: r.message.c_values.cf_stack
 					}
 					this.render_profit_loss();
-					if (frappe.user.has_role('Administrator') || frappe.user.has_role('System Manager') || frappe.user.has_role('Accounts Manager') || frappe.user.has_role('Accounts User')){
-					this.render_bank_balances();
-					this.main_section.find('.invoice-c').removeClass('hide');
-					this.get_sales_invoices();
-					this.get_purchase_invoices();
-					this.create_invoice_filters();
-					this.main_section.find('.cf-chart-container').removeClass('hide');
-					this.render_cash_flow();
-					this.main_section.find('.sales-chart-container').removeClass('hide');
-					this.render_sales();
+					if (frappe.user.has_role('Purchase User') || frappe.user.has_role('Auditor') || frappe.user.has_role('System Manager') || frappe.user.has_role('Accounts Manager') || frappe.user.has_role('Accounts User')){
+						this.get_purchase_invoices();
+					}
+					if (frappe.user.has_role('Auditor') || frappe.user.has_role('System Manager') || frappe.user.has_role('Accounts Manager') || frappe.user.has_role('Accounts User')){
+						this.render_bank_balances();
+						this.main_section.find('.cf-chart-container').removeClass('hide');
+						this.render_cash_flow();
+						this.main_section.find('.sales-chart-container').removeClass('hide');
+						this.render_sales();
+					}
+					if ((frappe.user.has_role('Auditor') || frappe.user.has_role('Purchase User')) && (frappe.user.has_role('System Manager') || frappe.user.has_role('Accounts Manager') || frappe.user.has_role('Accounts User'))){
+						this.get_sales_invoices();
 					}
 			}
 			},
@@ -649,7 +651,7 @@ var myChart = new Chart(ctx, {
 	get_sales_invoices() {
 		frappe.xcall('erpnext.accounts.page.accounts_dashboard.accounts_dashboard.get_invoices', {
 			invoice_type: 'Sales Invoice',
-			timespan: this.invoice_filter,
+			timespan: this.sinvoice_filter,
 			company: frappe.defaults.get_user_default("company")
 		}).then(r => {
 			this.sales_doughnut.empty().append(frappe.render_template('sales', {
@@ -660,13 +662,14 @@ var myChart = new Chart(ctx, {
 				currency: r.currency
 			}));
 			this.create_sales_invoice_chart(r.data);
+			this.create_sinvoice_filters();
 		});
 	}
 
 	get_purchase_invoices() {
 		frappe.xcall('erpnext.accounts.page.accounts_dashboard.accounts_dashboard.get_invoices', {
 			invoice_type: 'Purchase Invoice',
-			timespan: this.invoice_filter,
+			timespan: this.pinvoice_filter,
 			company: frappe.defaults.get_user_default("company")
 		}).then(r => {
 			this.purchase_doughnut.empty().append(frappe.render_template('purchase', {
@@ -677,27 +680,43 @@ var myChart = new Chart(ctx, {
 				currency: r.currency
 			}));
 			this.create_purchase_invoice_chart(r.data);
+			this.create_pinvoice_filters();
+
 		});
 	}
 
-	create_invoice_filters() {
+	create_sinvoice_filters() {
 		let filters = [
 			{
-				label: this.invoice_filter,
+				label: this.sinvoice_filter,
 				options: ['Last Year', 'Last Month', 'Last Quarter', 'Last Week'],
 				action: (selected_item) => {
-					this.invoice_filter = selected_item;
+					this.sinvoice_filter = selected_item;
 					this.get_sales_invoices();
+				}
+			}
+		];
+		this.render_invoice_filters(filters, '.sales-chart-filter', 1, 'none');
+	}
+
+	create_pinvoice_filters() {
+		let filters = [
+			{
+				label: this.pinvoice_filter,
+				options: ['Last Year', 'Last Month', 'Last Quarter', 'Last Week'],
+				action: (selected_item) => {
+					this.pinvoice_filter = selected_item;
 					this.get_purchase_invoices();
 				}
 			}
 		];
-		this.render_invoice_filters(filters, '.invoice-chart-container', 1, 'none');
+		this.render_invoice_filters(filters, '.purchase-chart-filter', 1, 'none');
 	}
 
 	render_invoice_filters(filters, container, append, chart_name) {
+		console.log('here2')
 		filters.forEach(filter => {
-			let chart_filter_html = `<div class="chart-filter">
+			let chart_filter_html = `<div class="chart-filter pull-right" style="top: -17px;">
 			<a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<button class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="${filter.title}">
 						<span class="filter-label">${filter.label}</span>
