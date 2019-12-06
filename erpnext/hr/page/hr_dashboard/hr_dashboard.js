@@ -26,8 +26,10 @@ class HrDashboard {
 		this.get_appraisal();
 		this.attendance_doughnut = this.main_section.find('.attendance');
 		this.pending_values = this.main_section.find('.pending');
+		this.employee_pending = this.main_section.find('.employee-pending');
 		this.get_attendance();
 		this.get_pendings();
+		this.get_employee_pendings();
 		if (frappe.user.has_role('Administrator') || frappe.user.has_role('System Manager') || frappe.user.has_role('HR Manager') || frappe.user.has_role('HR User')){
 			this.dept = this.main_section.find('.dept-analytics');
 			this.get_dept();
@@ -128,6 +130,20 @@ class HrDashboard {
 				late: r.late_entry,
 				early: r.early_exit,
 				leave: r.leave_app
+			}));
+		});
+	}
+
+	get_employee_pendings() {
+		frappe.xcall('erpnext.hr.page.hr_dashboard.hr_dashboard.get_employee_pendings', {
+		}).then(r => {
+			this.employee_pending.empty().append(frappe.render_template('employee_pendings', {
+				expense: r.claim,
+				loan: r.loan,
+				promotion: r.promotion,
+				transfer: r.transfer,
+				onboarding: r.onboarding,
+				separation: r.separation
 			}));
 		});
 	}

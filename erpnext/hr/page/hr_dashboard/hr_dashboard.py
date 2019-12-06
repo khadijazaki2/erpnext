@@ -171,3 +171,28 @@ def get_appraisal(timespan = 'Last Year'):
     chart["completed"] = approved
     chart["pending"] = drafts
     return chart
+
+@frappe.whitelist()
+def get_training():
+    program = frappe.get_list('Training Program', filters=[["company", "=", company], ["status", "=", "Scheduled"]], fields = ['name', 'description'])
+    events = frappe.get_list('Training Event', filters=[["company", "=", company], ["event_status", "=", "Scheduled"]], fields = ['name', 'type', 'location', 'start_time', 'end_time', 'introduction'])
+
+@frappe.whitelist()
+def get_employee_pendings():
+    expense = len(frappe.get_list('Expense Claim', filters=[["company", "=", company], ["approval_status", "=", "Draft"]]))
+    loan = len(frappe.get_list('Loan Application', filters=[["company", "=", company], ["status", "=", "Open"]]))
+    promotion = len(frappe.get_list('Employee Promotion', filters=[["company", "=", company], ["docstatus", "=", "Draft"]]))
+    transfer = len(frappe.get_list('Employee Transfer', filters=[["company", "=", company], ["docstatus", "=", "Draft"]]))
+    onboarding = len(frappe.get_list('Employee Onboarding', filters=[["company", "=", company], ["boarding_status", "=", "Pending"]]))
+    separation = len(frappe.get_list('Employee Separation', filters=[["company", "=", company], ["boarding_status", "=", "Pending"]]))
+    
+    data = {
+        "claim": expense,
+        "loan": loan,
+        "promotion": promotion,
+        "transfer": transfer,
+        "onboarding": onboarding,
+        "separation": separation
+    }
+
+    return data
